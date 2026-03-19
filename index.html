@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enhanced Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --bg: #f4f4f4;
+            --text: #000;
+            --btn: #e0e0e0;
+            --btn-text: #000;
+        }
+
+        body.dark {
+            --bg: #1e1e1e;
+            --text: #fff;
+            --btn: #333;
+            --btn-text: #fff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            width: 90%;
+            max-width: 350px;
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        #display {
+            width: 92%;
+            padding: 15px;
+            font-size: 24px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 8px;
+            background: var(--btn);
+            color: var(--btn-text);
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 20px;
+            border: none;
+            border-radius: 8px;
+            background: var(--btn);
+            color: var(--btn-text);
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .wide {
+            grid-column: span 4;
+            background: #ff6666;
+            color: white;
+        }
+
+        .dark-toggle {
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div class="dark-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</div>
+
+    <input type="text" id="display" disabled>
+
+    <div class="buttons">
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button onclick="press('/')">/</button>
+
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button onclick="press('*')">*</button>
+
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button onclick="press('-')">-</button>
+
+        <button onclick="press('0')">0</button>
+        <button onclick="press('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="press('+')">+</button>
+
+        <button class="wide" onclick="clearDisplay()">Clear</button>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById("display");
+
+    function press(value) {
+        display.value += value;
+    }
+
+    function calculate() {
+        try {
+            display.value = eval(display.value);
+        } catch {
+            display.value = "Error";
+        }
+    }
+
+    function clearDisplay() {
+        display.value = "";
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+    }
+
+    // Keyboard support
+    document.addEventListener("keydown", (e) => {
+        const key = e.key;
+
+        if (!isNaN(key) || "+-*/.".includes(key)) {
+            press(key);
+        } else if (key === "Enter") {
+            calculate();
+        } else if (key === "Backspace") {
+            display.value = display.value.slice(0, -1);
+        } else if (key === "Escape") {
+            clearDisplay();
+        }
+    });
+</script>
+
+</body>
+</html>
